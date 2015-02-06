@@ -125,9 +125,9 @@ for env in [win32,win64,linux]:
     exe = SConscript('SConscript',
                      variant_dir=build_dir,
                      src_dir='.',
-                     exports=['env'])
+                     exports=['env'],
+                     duplicate=False)
     inst_dir = env['SYS']
-    Execute(Mkdir(env['SYS']))
     env.RecursiveInstall(inst_dir,exe)
     if os.path.exists('resources'):
         env.RecursiveInstall(inst_dir,'resources')
