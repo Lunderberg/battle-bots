@@ -4,22 +4,18 @@
 #include <sstream>
 
 #include <irrlicht.h>
-#include "driverChoice.h"
 
 #include "EventReceiver.hh"
-#include "PanningCamera.hh"
-#include "ProceduralTexture.hh"
-#include "TrapMouse.hh"
-
 #include "GameState.hh"
 #include "GameStateRenderer.hh"
+#include "InputManager.hh"
 
 using namespace irr;
 
 int main(){
-  EventReceiver receiver;
+  auto receiver = std::make_shared<EventReceiver>();
   IrrlichtDevice* device = createDevice(video::EDT_OPENGL, core::dimension2d<u32>(640,480), 16,
-        		     false, true, false, &receiver);
+                                        false, true, false, receiver.get());
   if (!device){
     return 1;
   }
@@ -30,16 +26,9 @@ int main(){
   auto smgr = device->getSceneManager();
   auto guienv = device->getGUIEnvironment();
 
-  // Load the sprites
-  video::ITexture* images = driver->getTexture("resources/2ddemo.png");
-  driver->makeColorKeyTexture(images, core::position2d<s32>(0,0));
-
-  // Load the fonts
-  gui::IGUIFont* font = guienv->getBuiltInFont();
-  gui::IGUIFont* font2 = guienv->getFont("resources/fonthaettenschweiler.bmp");
-
-  auto game_state = std::make_shared<GameState>(20,20);
+  GameState game_state(20,20);
   GameStateRenderer game_state_renderer(game_state);
+  InputManager input_manager(receiver);
 
   // A 2d render mode
   driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;
@@ -60,11 +49,8 @@ int main(){
 
     driver->beginScene(true, true, video::SColor(255,120,102,136));
 
-    game_state_renderer.Update(device);
-    game_state_renderer.Draw(driver);
-
-
-
+    input_manager.HandleInput(device, game_state, game_state_renderer);
+    game_state_renderer.Draw(driver, game_state);
 
     // driver->enableMaterial2D();
     // driver->draw2DImage(images, core::rect<s32>(10,10,108,48),

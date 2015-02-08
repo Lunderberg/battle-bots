@@ -9,10 +9,11 @@ class GameState;
 
 class GameStateRenderer{
 public:
-  GameStateRenderer(std::shared_ptr<GameState> state);
 
-  void Update(irr::IrrlichtDevice* device);
-  void Draw(irr::video::IVideoDriver* driver);
+
+  GameStateRenderer(const GameState& state);
+
+  void Draw(irr::video::IVideoDriver* driver, const GameState& state);
 
   int GetTileSize(){ return tile_size; }
   void SetTileSize(int tile_size){ this->tile_size = tile_size; }
@@ -20,18 +21,18 @@ public:
   double GetScrollSpeed(){ return scroll_speed; }
   void SetScrollSpeed(double scroll_speed){ this->scroll_speed = scroll_speed; }
 
-private:
-  void PanViewpoint(irr::IrrlichtDevice* device);
+  irr::core::vector2df GetCenter(){ return center; }
+  void SetCenter(irr::core::vector2df center){ this->center = center; }
 
-  std::shared_ptr<GameState> state;
+private:
   irr::video::ITexture* background;
   irr::video::ITexture* stone;
   irr::video::ITexture* dirt;
   irr::video::ITexture* outofbounds;
 
-  irr::core::vector2df center;
   int tile_size;
   double scroll_speed;
+  irr::core::vector2df center;
 };
 
 #endif /* _GAMESTATERENDERER_H_ */
