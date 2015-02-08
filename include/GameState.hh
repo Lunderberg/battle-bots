@@ -9,9 +9,9 @@
 class GameState{
 public:
   GameState(int width, int height);
-  Tile GetTileAt(int i, int j);
-  int GetWidth(){return width;}
-  int GetHeight(){return height;}
+  Tile GetTileAt (int i, int j) const;
+  int GetWidth() const {return width;}
+  int GetHeight() const {return height;}
 
 private:
   int width;

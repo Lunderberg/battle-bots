@@ -7,7 +7,7 @@ GameState::GameState(int width, int height) :
   width(width), height(height) {
   for(int i=0; i<width; i++){
     for(int j=0; j<height; j++){
-      if(rand()%2){
+      if(i+j < 15){
         map.push_back(Tile::Stone);
       } else {
         map.push_back(Tile::Dirt);
@@ -16,7 +16,7 @@ GameState::GameState(int width, int height) :
   }
 }
 
-Tile GameState::GetTileAt(int i, int j){
+Tile GameState::GetTileAt(int i, int j) const {
   if(i>=0 && i<width &&
      j>=0 && j<height){
     return map.at(j*width + i);

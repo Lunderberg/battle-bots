@@ -41,9 +41,6 @@ int main(){
   auto game_state = std::make_shared<GameState>(20,20);
   GameStateRenderer game_state_renderer(game_state);
 
-  core::rect<s32> imp1(349,15,385,78);
-  core::rect<s32> imp2(387,15,423,78);
-
   // A 2d render mode
   driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;
   driver->getMaterial2D().AntiAliasing = video::EAAM_FULL_BASIC;
@@ -63,53 +60,21 @@ int main(){
 
     driver->beginScene(true, true, video::SColor(255,120,102,136));
 
+    game_state_renderer.Update(device);
     game_state_renderer.Draw(driver);
 
-    // // Draw background
-    // driver->draw2DImage(images, core::position2d<s32>(50,50),
-    //                     core::rect<s32>(0,0,342,224), 0,
-    //                     video::SColor(255,255,255,255), true);
-
-    // // draw first imp
-    // driver->draw2DImage(images, core::position2d<s32>(164,125),
-    //                     (now/500 % 2) ? imp1 : imp2, 0,
-    //                     video::SColor(255,255,255,255), true);
-
-    // // draw second imp
-    // driver->draw2DImage(images, core::position2d<s32>(270,105),
-    //                     (now/500 % 2) ? imp1 : imp2, 0,
-    //                     video::SColor(255, now/10 % 255, 255, 255), true);
 
 
-    font->draw(L"Capable of 2D graphics",
-               core::rect<s32>(130,10,300,50),
-               video::SColor(255,255,255,255));
 
-    font2->draw(L"Can also mix with 3d graphics",
-                core::rect<s32>(130,20,300,60),
-                video::SColor(255, now%255, now%255, 255));
-
-    driver->enableMaterial2D();
-    driver->draw2DImage(images, core::rect<s32>(10,10,108,48),
-                        core::rect<s32>(354,87,442,118));
-    driver->enableMaterial2D(false);
+    // driver->enableMaterial2D();
+    // driver->draw2DImage(images, core::rect<s32>(10,10,108,48),
+    //                     core::rect<s32>(354,87,442,118));
+    // driver->enableMaterial2D(false);
 
     core::position2d<s32> mouse = device->getCursorControl()->getPosition();
     driver->draw2DRectangle(video::SColor(100,255,255,255),
                             core::rect<s32>(mouse.X-20, mouse.Y-20, mouse.X+20, mouse.Y+20));
 
-    // // Adjust the FPS counter
-    // std::wstringstream ss;
-    // ss << "FPS: " << driver->getFPS()
-    //    << " Mouse: (" << receiver.mouse().x << "," << receiver.mouse().y << ")"
-    //    << " Mouse: (" << device->getCursorControl()->getRelativePosition().X << ","
-    //    << device->getCursorControl()->getRelativePosition().Y << ")";
-    // auto wstring = ss.str();
-    // text->setText(wstring.c_str());
-
-    // // Draw everything
-    // smgr->drawAll();
-    // guienv->drawAll();
     driver->endScene();
   }
 
