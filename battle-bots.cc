@@ -9,6 +9,7 @@
 #include "GameState.hh"
 #include "GameStateRenderer.hh"
 #include "InputManager.hh"
+#include "PlayerActor.hh"
 
 using namespace irr;
 
@@ -30,9 +31,12 @@ int main(){
   GameStateRenderer game_state_renderer(game_state);
   InputManager input_manager(receiver);
 
-  // A 2d render mode
-  driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;
-  driver->getMaterial2D().AntiAliasing = video::EAAM_FULL_BASIC;
+  game_state.AddActor(std::make_shared<PlayerActor>());
+
+  // // Uncomment to use bilinear filter for resizing.
+  // driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;
+  // driver->getMaterial2D().AntiAliasing = video::EAAM_FULL_BASIC;
+  // driver->enableMaterial2D();
 
   u32 prev_time = device->getTimer()->getTime();
 
@@ -50,12 +54,8 @@ int main(){
     driver->beginScene(true, true, video::SColor(255,120,102,136));
 
     input_manager.HandleInput(device, game_state, game_state_renderer);
+    game_state.FrameUpdate();
     game_state_renderer.Draw(driver, game_state);
-
-    // driver->enableMaterial2D();
-    // driver->draw2DImage(images, core::rect<s32>(10,10,108,48),
-    //                     core::rect<s32>(354,87,442,118));
-    // driver->enableMaterial2D(false);
 
     core::position2d<s32> mouse = device->getCursorControl()->getPosition();
     driver->draw2DRectangle(video::SColor(100,255,255,255),

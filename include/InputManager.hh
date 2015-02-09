@@ -16,6 +16,7 @@ public:
   void HandleInput(irr::IrrlichtDevice* device, GameState& state, GameStateRenderer& renderer);
 private:
   void PanViewpoint(irr::IrrlichtDevice* device, GameState& state, GameStateRenderer& renderer);
+  void UpdatePlayerActors(GameState& state);
 
   std::shared_ptr<EventReceiver> receiver;
 

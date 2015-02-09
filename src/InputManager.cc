@@ -5,6 +5,7 @@
 #include "EventReceiver.hh"
 #include "GameState.hh"
 #include "GameStateRenderer.hh"
+#include "PlayerActor.hh"
 #include "Utilities.hh"
 
 InputManager::InputManager(std::shared_ptr<EventReceiver> receiver)
@@ -12,6 +13,7 @@ InputManager::InputManager(std::shared_ptr<EventReceiver> receiver)
 
 void InputManager::HandleInput(irr::IrrlichtDevice* device, GameState& state, GameStateRenderer& renderer){
   PanViewpoint(device, state, renderer);
+  UpdatePlayerActors(state);
 }
 
 void InputManager::PanViewpoint(irr::IrrlichtDevice* device, GameState& state, GameStateRenderer& renderer){
@@ -40,5 +42,30 @@ void InputManager::PanViewpoint(irr::IrrlichtDevice* device, GameState& state, G
     clamp_modify(center.X, 0, state.GetWidth());
     clamp_modify(center.Y, 0, state.GetHeight());
     renderer.SetCenter(center);
+  }
+
+  if(receiver->GetMouseWheel()){
+    renderer.SetTileSize( renderer.GetTileSize() + receiver->GetMouseWheel() );
+    receiver->ResetMouseWheel();
+  }
+}
+
+void InputManager::UpdatePlayerActors(GameState& state){
+  Action action = Action::Wait;
+  if(receiver->IsKeyDown(irr::KEY_KEY_W)){
+    action = Action::MoveUp;
+  } else if(receiver->IsKeyDown(irr::KEY_KEY_S)){
+    action = Action::MoveDown;
+  } else if(receiver->IsKeyDown(irr::KEY_KEY_A)){
+    action = Action::MoveLeft;
+  } else if(receiver->IsKeyDown(irr::KEY_KEY_D)){
+    action = Action::MoveRight;
+  }
+
+  for(auto& actor : state.GetActors()){
+    auto player_actor = std::dynamic_pointer_cast<PlayerActor>(actor);
+    if(player_actor){
+      player_actor->SetCurrentAction(action);
+    }
   }
 }

@@ -16,6 +16,12 @@ GameState::GameState(int width, int height) :
   }
 }
 
+void GameState::FrameUpdate(){
+  for(auto& actor : actors){
+    actor->Act();
+  }
+}
+
 Tile GameState::GetTileAt(int i, int j) const {
   if(i>=0 && i<width &&
      j>=0 && j<height){

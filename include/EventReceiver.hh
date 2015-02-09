@@ -10,41 +10,25 @@ struct SMouse{
 
 class EventReceiver : public irr::IEventReceiver{
 public:
-  EventReceiver(){
-    for(irr::u32 i=0; i<irr::KEY_KEY_CODES_COUNT; i++){
-      KeyIsDown[i] = false;
-    }
-  }
+  EventReceiver();
 
-  virtual bool OnEvent(const irr::SEvent& event){
-    if(event.EventType == irr::EET_KEY_INPUT_EVENT){
-      KeyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
-    } else if (event.EventType == irr::EET_MOUSE_INPUT_EVENT){
-      switch(event.MouseInput.Event){
+  virtual bool OnEvent(const irr::SEvent& event);
 
-      case irr::EMIE_MOUSE_MOVED:
-        MouseInfo.x = event.MouseInput.X;
-        MouseInfo.y = event.MouseInput.Y;
-        break;
-
-      default:
-        break;
-      }
-    }
-    return false;
-  }
-
-  virtual bool IsKeyDown(irr::EKEY_CODE keyCode) const {
+  bool IsKeyDown(irr::EKEY_CODE keyCode) const {
     return KeyIsDown[keyCode];
   }
 
-  const SMouse& mouse(){
+  SMouse mouse() const {
     return MouseInfo;
   }
+
+  float GetMouseWheel() const { return wheel; }
+  void ResetMouseWheel(){ wheel = 0; }
 
 private:
   bool KeyIsDown[irr::KEY_KEY_CODES_COUNT];
   SMouse MouseInfo;
+  float wheel;
 };
 
 #endif /* _EVENTRECEIVER_H_ */
