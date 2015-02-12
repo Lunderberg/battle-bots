@@ -16,7 +16,7 @@ public:
   int GetWidth() const { return width; }
   int GetHeight() const { return height; }
 
-  void AddActor(std::shared_ptr<Actor> actor){ actors.push_back(actor); }
+  void AddActor(std::shared_ptr<Actor> actor);
   const std::vector<std::shared_ptr<Actor> >& GetActors(){ return actors; }
   std::vector<std::shared_ptr<const Actor> > GetActors() const {
     return std::vector<std::shared_ptr<const Actor> >(actors.begin(), actors.end());

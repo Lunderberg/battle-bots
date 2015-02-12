@@ -1,6 +1,11 @@
 #ifndef _ACTOR_H_
 #define _ACTOR_H_
 
+#include <memory>
+
+class GameState;
+class RestrictedGameState;
+
 enum class Activity {
   Wait, Move, Attack,
     };
@@ -16,7 +21,6 @@ struct Action{
   Direction direction;
 };
 
-
 class Actor{
 public:
   Actor();
@@ -25,6 +29,11 @@ public:
 
   int GetX() const { return x; }
   int GetY() const { return y; }
+
+  void SetGameState(GameState* state);
+
+protected:
+  std::unique_ptr<RestrictedGameState> state;
 
 private:
   virtual Action ChooseAction() = 0;

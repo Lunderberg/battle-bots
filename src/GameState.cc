@@ -30,3 +30,8 @@ Tile GameState::GetTileAt(int i, int j) const {
     return Tile::OutOfBounds;
   }
 }
+
+void GameState::AddActor(std::shared_ptr<Actor> actor){
+  actor->SetGameState(this);
+  actors.push_back(actor);
+}
