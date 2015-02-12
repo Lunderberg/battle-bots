@@ -5,30 +5,29 @@ Actor::Actor() : x(0), y(0) { }
 Actor::~Actor(){}
 
 void Actor::Act(){
-  switch(ChooseAction()){
-  case Action::Wait:
+  auto action = ChooseAction();
+  switch(action.activity){
+  case Activity::Wait:
     break;
 
-  case Action::MoveLeft:
-    x -= 1;
-    break;
-  case Action::MoveRight:
-    x += 1;
-    break;
-  case Action::MoveUp:
-    y += 1;
-    break;
-  case Action::MoveDown:
-    y -= 1;
+  case Activity::Move:
+    switch(action.direction){
+    case Direction::North:
+      y += 1;
+      break;
+    case Direction::South:
+      y -= 1;
+      break;
+    case Direction::East:
+      x += 1;
+      break;
+    case Direction::West:
+      x -= 1;
+      break;
+    }
     break;
 
-  case Action::AttackLeft:
-    break;
-  case Action::AttackRight:
-    break;
-  case Action::AttackUp:
-    break;
-  case Action::AttackDown:
+  case Activity::Attack:
     break;
   }
 }
