@@ -5,6 +5,9 @@ win32
 win64
 build
 
+### doxygen
+html
+
 ### emacs backup files
 *~
 \#*
