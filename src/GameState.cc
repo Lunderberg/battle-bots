@@ -18,7 +18,7 @@ GameState::GameState(int width, int height) :
 
 void GameState::FrameUpdate(){
   for(auto& actor : actors){
-    actor->Act();
+    UpdateActor(actor);
   }
 }
 
@@ -31,7 +31,33 @@ Tile GameState::GetTileAt(int x, int y) const {
   }
 }
 
-void GameState::AddActor(std::shared_ptr<Actor> actor){
+void GameState::AddActor(std::unique_ptr<Actor> actor){
   actor->SetGameState(this);
-  actors.push_back(actor);
+  actors.push_back(std::move(actor));
+}
+
+void GameState::UpdateActor(std::shared_ptr<Actor> actor){
+  auto action = actor->ChooseAction();
+
+  switch(action.activity){
+  case Activity::Wait:
+    break;
+
+  case Activity::Move:
+    switch(action.direction){
+    case Direction::North:
+      actor->SetY(actor->GetY() + 1);
+      break;
+    case Direction::South:
+      actor->SetY(actor->GetY() - 1);
+      break;
+    case Direction::East:
+      actor->SetX(actor->GetX() + 1);
+      break;
+    case Direction::West:
+      actor->SetX(actor->GetX() - 1);
+      break;
+    }
+    break;
+  }
 }

@@ -31,7 +31,7 @@ int main(){
   GameStateRenderer game_state_renderer(game_state);
   InputManager input_manager(receiver);
 
-  game_state.AddActor(std::make_shared<PlayerActor>());
+  game_state.AddActor(std::unique_ptr<Actor>(new PlayerActor));
 
   // // Uncomment to use bilinear filter for resizing.
   // driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;

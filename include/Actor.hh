@@ -25,12 +25,10 @@ struct Action{
 
 //! The base class of all independent actors
 class Actor{
+  friend class GameState;
 public:
   Actor();
   virtual ~Actor();
-
-  //! Called each frame, allowing the actor to perform an action.
-  void Act();
 
   //! Returns the x position of the actor.
   int GetX() const { return x; }
@@ -58,6 +56,9 @@ private:
   /*! Given the current state of the game, choose an action to take on this frame.
    */
   virtual Action ChooseAction() = 0;
+
+  void SetX(int x) { this->x = x; }
+  void SetY(int y) { this->y = y; }
 
   int x,y; //! The current position of the Actor.
 };

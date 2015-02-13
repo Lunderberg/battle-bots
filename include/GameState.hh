@@ -29,7 +29,7 @@ public:
   /*! @param actor The actor being added.
     This method also calls Actor::SetGameState to allow the Actor to see.
    */
-  void AddActor(std::shared_ptr<Actor> actor);
+  void AddActor(std::unique_ptr<Actor> actor);
 
   //! Returns the actors present in the GameState.
   const std::vector<std::shared_ptr<Actor> >& GetActors(){ return actors; }
@@ -39,6 +39,8 @@ public:
   }
 
 private:
+  void UpdateActor(std::shared_ptr<Actor> actor);
+
   int width;
   int height;
 
