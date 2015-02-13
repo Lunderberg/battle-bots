@@ -7,10 +7,18 @@
 
 var indexSectionsWithContent =
 {
+  0: "acdegiprs",
+  1: "aegiprs",
+  2: "acgs",
+  3: "ds"
 };
 
 var indexSectionNames =
 {
+  0: "all",
+  1: "classes",
+  2: "functions",
+  3: "variables"
 };
 
 function convertToId(search)
