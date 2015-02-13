@@ -12,12 +12,28 @@ public:
   GameState(int width, int height);
   void FrameUpdate();
 
-  Tile GetTileAt (int i, int j) const;
+  //! Returns the type of tile present at a given location.
+  /*! @param x The x coordinate of the desired tile.
+    @param y The y coordinate of the desired tile.
+
+    Return the tile present at the given location.
+    Returns Tile::OutOfBounds if the requested location is outside of the full map.
+   */
+  Tile GetTileAt (int x, int y) const;
+  //! Return the width of the play area.
   int GetWidth() const { return width; }
+  //! Return the height of the play area.
   int GetHeight() const { return height; }
 
+  //! Add an actor to the GameState.
+  /*! @param actor The actor being added.
+    This method also calls Actor::SetGameState to allow the Actor to see.
+   */
   void AddActor(std::shared_ptr<Actor> actor);
+
+  //! Returns the actors present in the GameState.
   const std::vector<std::shared_ptr<Actor> >& GetActors(){ return actors; }
+  //! Returns the actors present in the GameState.
   std::vector<std::shared_ptr<const Actor> > GetActors() const {
     return std::vector<std::shared_ptr<const Actor> >(actors.begin(), actors.end());
   }

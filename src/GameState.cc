@@ -22,10 +22,10 @@ void GameState::FrameUpdate(){
   }
 }
 
-Tile GameState::GetTileAt(int i, int j) const {
-  if(i>=0 && i<width &&
-     j>=0 && j<height){
-    return map.at(j*width + i);
+Tile GameState::GetTileAt(int x, int y) const {
+  if(x>=0 && x<width &&
+     y>=0 && y<height){
+    return map.at(y*width + x);
   } else {
     return Tile::OutOfBounds;
   }
