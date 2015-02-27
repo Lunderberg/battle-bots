@@ -21,6 +21,7 @@ private:
   std::shared_ptr<EventReceiver> receiver;
 
   double view_scroll_speed;
+  unsigned int prev_time;
 };
 
 #endif /* _INPUTMANAGER_H_ */

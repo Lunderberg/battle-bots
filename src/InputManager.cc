@@ -9,11 +9,12 @@
 #include "Utilities.hh"
 
 InputManager::InputManager(std::shared_ptr<EventReceiver> receiver)
-  : receiver(receiver), view_scroll_speed(0.1) {}
+  : receiver(receiver), view_scroll_speed(0.1), prev_time(0) {}
 
 void InputManager::HandleInput(irr::IrrlichtDevice* device, GameState& state, GameStateRenderer& renderer){
   PanViewpoint(device, state, renderer);
   UpdatePlayerActors(state);
+  prev_time = device->getTimer()->getTime();
 }
 
 void InputManager::PanViewpoint(irr::IrrlichtDevice* device, GameState& state, GameStateRenderer& renderer){
@@ -26,8 +27,8 @@ void InputManager::PanViewpoint(irr::IrrlichtDevice* device, GameState& state, G
   int y = cursor_pos.Y * maxY;
 
   // Trap the mouse within the window.
-  bool changedX = clamp_modify(x, 1, maxX-2);
-  bool changedY = clamp_modify(y, 1, maxY-2);
+  bool changedX = clamp_modify(x, 1, maxX-1);
+  bool changedY = clamp_modify(y, 1, maxY-1);
   if(changedX || changedY){
     device->getCursorControl()->setPosition(x,y);
   }
@@ -38,6 +39,7 @@ void InputManager::PanViewpoint(irr::IrrlichtDevice* device, GameState& state, G
     //    while irrlicht screen coordinates have +y going down.
     irr::core::vector2df disp_screen(x - maxX/2, maxY/2 - y);
     disp_screen.normalize();
+    double distance = view_scroll_speed * (device->getTimer()->getTime() - prev_time) / 1000.0;
     auto center = renderer.GetCenter() + view_scroll_speed * disp_screen;
     clamp_modify(center.X, 0, state.GetWidth());
     clamp_modify(center.Y, 0, state.GetHeight());
