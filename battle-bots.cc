@@ -1,6 +1,8 @@
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <memory>
+#include <random>
 #include <sstream>
 
 #include <irrlicht.h>
@@ -10,6 +12,7 @@
 #include "GameStateRenderer.hh"
 #include "InputManager.hh"
 #include "PlayerActor.hh"
+#include "RandomActor.hh"
 
 using namespace irr;
 
@@ -36,7 +39,16 @@ int main(){
   GameStateRenderer game_state_renderer(game_state);
   InputManager input_manager(receiver);
 
-  game_state.AddActor(std::unique_ptr<Actor>(new PlayerActor));
+  auto player_actor = std::unique_ptr<Actor>(new PlayerActor);
+  player_actor->SetColor({0,255,0});
+  game_state.AddActor(std::move(player_actor));
+
+  auto random = std::make_shared<std::mt19937>(std::time(0));
+  for(int i=0; i<10; i++){
+    auto new_actor = std::unique_ptr<Actor>(new RandomActor(random));
+    new_actor->SetColor({255,0,0});
+    game_state.AddActor(std::move(new_actor));
+  }
 
   // // Uncomment to use bilinear filter for resizing.
   // driver->getMaterial2D().TextureLayer[0].BilinearFilter = true;

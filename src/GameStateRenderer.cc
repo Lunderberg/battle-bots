@@ -10,7 +10,7 @@
 
 
 GameStateRenderer::GameStateRenderer(const GameState& state)
-  : background(NULL), stone(NULL), dirt(NULL), outofbounds(NULL), player(NULL),
+  : background(NULL), stone(NULL), dirt(NULL), outofbounds(NULL), actor_texture(NULL),
     tile_size(16), scroll_speed(0.1){
   center = irr::core::vector2df(state.GetWidth()/2.0, state.GetHeight()/2.0);
 }
@@ -69,14 +69,16 @@ void GameStateRenderer::Draw(irr::video::IVideoDriver* driver, const GameState& 
   for(auto& actor : state.GetActors()){
     int i = actor->GetX() - center_tile.X;
     int j = actor->GetY() - center_tile.Y;
+    auto color = actor->GetColor();
+
     irr::core::position2d<irr::s32> topleft( i*tile_size + center_position.X,
                                              -j*tile_size + center_position.Y);
     irr::core::rect<irr::s32> dest_rect(topleft.X, topleft.Y,
                                         topleft.X + tile_size, topleft.Y + tile_size);
     irr::core::rect<irr::s32> source_rect(0, 0, 16, 16);
-    if(player != NULL){
-      driver->draw2DImage(player, dest_rect, source_rect,
-                          NULL, NULL, true);
+    if(actor_texture != NULL){
+      driver->draw2DImage(actor_texture, topleft, source_rect,
+                          NULL, {255, color.red, color.green, color.blue} , true);
     }
   }
 }
@@ -94,8 +96,8 @@ void GameStateRenderer::InitializeTextures(irr::video::IVideoDriver* driver){
   if(outofbounds == NULL){
     outofbounds = driver->getTexture("resources/outofbounds.png");
   }
-  if(player == NULL){
-    player = driver->getTexture("resources/player.png");
-    driver->makeColorKeyTexture(player, {0,0});
+  if(actor_texture == NULL){
+    actor_texture = driver->getTexture("resources/actor.png");
+    driver->makeColorKeyTexture(actor_texture, {0,0});
   }
 }

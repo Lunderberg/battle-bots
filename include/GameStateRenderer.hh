@@ -32,7 +32,8 @@ private:
   irr::video::ITexture* stone;
   irr::video::ITexture* dirt;
   irr::video::ITexture* outofbounds;
-  irr::video::ITexture* player;
+  irr::video::ITexture* actor_texture;
+
 
   int tile_size;
   double scroll_speed;

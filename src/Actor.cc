@@ -1,6 +1,7 @@
 #include "Actor.hh"
 
-Actor::Actor() : x(0), y(0), state(nullptr) { }
+Actor::Actor() :
+  x(0), y(0), state(nullptr), color(0,255,0) { }
 
 Actor::~Actor(){}
 

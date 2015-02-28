@@ -23,6 +23,12 @@ struct Action{
   Direction direction;
 };
 
+struct Color{
+  Color(unsigned char red, unsigned char green, unsigned char blue) :
+    red(red), green(green), blue(blue) { }
+  unsigned char red, green, blue;
+};
+
 //! The base class of all independent actors
 class Actor{
   friend class GameState;
@@ -34,6 +40,9 @@ public:
   int GetX() const { return x; }
   //! Returns the y position of the actor.
   int GetY() const { return y; }
+  //! Returns the color of the actor.
+  Color GetColor() const { return color; }
+  void SetColor(Color color_in) { color = color_in; }
 
   //! Sets the internal gamestate known by the actor.
   /*! @param game_state The full state of the game.
@@ -61,6 +70,7 @@ private:
   void SetY(int y) { this->y = y; }
 
   int x,y; //! The current position of the Actor.
+  Color color; //! The current color of the Actor.
 };
 
 #endif /* _ACTOR_H_ */
