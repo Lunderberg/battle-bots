@@ -77,8 +77,10 @@ void GameStateRenderer::Draw(irr::video::IVideoDriver* driver, const GameState& 
                                         topleft.X + tile_size, topleft.Y + tile_size);
     irr::core::rect<irr::s32> source_rect(0, 0, 16, 16);
     if(actor_texture != NULL){
-      driver->draw2DImage(actor_texture, topleft, source_rect,
-                          NULL, {255, color.red, color.green, color.blue} , true);
+      std::vector<irr::video::SColor> colors;
+      colors.resize(4, {255, color.red, color.green, color.blue} );
+      driver->draw2DImage(actor_texture, dest_rect, source_rect,
+                          NULL, colors.data() , true);
     }
   }
 }
@@ -98,6 +100,6 @@ void GameStateRenderer::InitializeTextures(irr::video::IVideoDriver* driver){
   }
   if(actor_texture == NULL){
     actor_texture = driver->getTexture("resources/actor.png");
-    driver->makeColorKeyTexture(actor_texture, {0,0});
+    //driver->makeColorKeyTexture(actor_texture, {0,0});
   }
 }
