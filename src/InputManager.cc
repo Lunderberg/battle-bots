@@ -54,18 +54,25 @@ void InputManager::PanViewpoint(irr::IrrlichtDevice* device, GameState& state, G
 
 void InputManager::UpdatePlayerActors(GameState& state){
   Action action;
+  bool movement = false;
   if(receiver->IsKeyDown(irr::KEY_KEY_W)){
-    action.activity = Activity::Move;
+    movement = true;
     action.direction = Direction::North;
   } else if(receiver->IsKeyDown(irr::KEY_KEY_S)){
-    action.activity = Activity::Move;
+    movement = true;
     action.direction = Direction::South;
   } else if(receiver->IsKeyDown(irr::KEY_KEY_A)){
-    action.activity = Activity::Move;
+    movement = true;
     action.direction = Direction::West;
   } else if(receiver->IsKeyDown(irr::KEY_KEY_D)){
-    action.activity = Activity::Move;
+    movement = true;
     action.direction = Direction::East;
+  }
+
+  if(movement){
+    action.activity = (receiver->IsKeyDown(irr::KEY_LSHIFT)) ? Activity::Attack : Activity::Move;
+  } else {
+    action.activity = Activity::Wait;
   }
 
   for(auto& actor : state.GetActors()){

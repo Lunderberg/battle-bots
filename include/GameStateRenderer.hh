@@ -33,6 +33,7 @@ private:
   irr::video::ITexture* dirt;
   irr::video::ITexture* outofbounds;
   irr::video::ITexture* actor_texture;
+  irr::video::ITexture* empty;
 
 
   int tile_size;

@@ -10,7 +10,7 @@
 
 
 GameStateRenderer::GameStateRenderer(const GameState& state)
-  : background(NULL), stone(NULL), dirt(NULL), outofbounds(NULL), actor_texture(NULL),
+  : background(NULL), stone(NULL), dirt(NULL), outofbounds(NULL), actor_texture(NULL), empty(NULL),
     tile_size(16), scroll_speed(0.1){
   center = irr::core::vector2df(state.GetWidth()/2.0, state.GetHeight()/2.0);
 }
@@ -56,6 +56,9 @@ void GameStateRenderer::Draw(irr::video::IVideoDriver* driver, const GameState& 
       case Tile::OutOfBounds:
         image = outofbounds;
         break;
+      case Tile::Empty:
+        image = empty;
+        break;
       }
 
       if(image != NULL){
@@ -100,6 +103,8 @@ void GameStateRenderer::InitializeTextures(irr::video::IVideoDriver* driver){
   }
   if(actor_texture == NULL){
     actor_texture = driver->getTexture("resources/actor.png");
-    //driver->makeColorKeyTexture(actor_texture, {0,0});
+  }
+  if(empty == NULL){
+    empty = driver->getTexture("resources/empty.png");
   }
 }

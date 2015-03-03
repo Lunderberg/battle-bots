@@ -19,7 +19,7 @@ public:
     Return the tile present at the given location.
     Returns Tile::OutOfBounds if the requested location is outside of the full map.
    */
-  Tile GetTileAt (int x, int y) const;
+  Tile GetTileAt(int x, int y) const;
   //! Return the width of the play area.
   int GetWidth() const { return width; }
   //! Return the height of the play area.
@@ -39,7 +39,12 @@ public:
   }
 
 private:
-  void UpdateActor(std::shared_ptr<Actor> actor);
+  void SetTileAt(Tile tile, int x, int y);
+
+  void UpdateActor(Actor& actor);
+  void ActorMove(Actor& actor, int target_x, int target_y);
+  void ActorWait(Actor& actor);
+  void ActorAttack(Actor& actor, int target_x, int target_y);
 
   int width;
   int height;
