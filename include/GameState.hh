@@ -31,6 +31,8 @@ public:
    */
   void AddActor(std::unique_ptr<Actor> actor);
 
+  bool IsTileEmpty(int x, int y) const;
+
   //! Returns the actors present in the GameState.
   const std::vector<std::shared_ptr<Actor> >& GetActors() const { return actors; }
 

@@ -41,6 +41,18 @@ void GameState::SetTileAt(Tile tile, int x, int y){
   }
 }
 
+bool GameState::IsTileEmpty(int x, int y) const {
+  if(GetTileAt(x,y) != Tile::Empty){
+    return false;
+  }
+  for(const auto& actor : actors){
+    if(actor->GetX() == x && actor->GetY() == y){
+      return false;
+    }
+  }
+  return true;
+}
+
 void GameState::AddActor(std::unique_ptr<Actor> actor){
   actor->SetGameState(this);
   actors.push_back(std::move(actor));
@@ -86,7 +98,7 @@ void GameState::UpdateActor(Actor& actor){
 }
 
 void GameState::ActorMove(Actor& actor, int target_x, int target_y){
-  if(GetTileAt(target_x, target_y) == Tile::Empty){
+  if(IsTileEmpty(target_x, target_y)){
     actor.SetX(target_x);
     actor.SetY(target_y);
   }
