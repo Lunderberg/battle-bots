@@ -20,4 +20,9 @@ T clamp(T value, U min, V max){
   return value;
 }
 
+template<typename T, typename... Params>
+std::unique_ptr<T> make_unique(Params&&... params){
+  return std::unique_ptr<T>(new T(std::forward<Params>(params)...));
+}
+
 #endif /* _UTILITIES_H_ */

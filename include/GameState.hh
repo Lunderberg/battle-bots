@@ -32,11 +32,7 @@ public:
   void AddActor(std::unique_ptr<Actor> actor);
 
   //! Returns the actors present in the GameState.
-  const std::vector<std::shared_ptr<Actor> >& GetActors(){ return actors; }
-  //! Returns the actors present in the GameState.
-  std::vector<std::shared_ptr<const Actor> > GetActors() const {
-    return std::vector<std::shared_ptr<const Actor> >(actors.begin(), actors.end());
-  }
+  const std::vector<std::shared_ptr<Actor> >& GetActors() const { return actors; }
 
 private:
   void SetTileAt(Tile tile, int x, int y);

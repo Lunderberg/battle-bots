@@ -11,8 +11,9 @@
 #include "GameState.hh"
 #include "GameStateRenderer.hh"
 #include "InputManager.hh"
-#include "PlayerActor.hh"
-#include "RandomActor.hh"
+#include "PlayerActorStrategy.hh"
+#include "RandomActorStrategy.hh"
+#include "Utilities.hh"
 
 using namespace irr;
 
@@ -30,7 +31,6 @@ int main(){
   device->setWindowCaption(L"2D Graphics test");
 
   auto driver = device->getVideoDriver();
-  auto smgr = device->getSceneManager();
   auto guienv = device->getGUIEnvironment();
 
   irr::gui::IGUIFont* font = guienv->getBuiltInFont();
@@ -39,13 +39,15 @@ int main(){
   GameStateRenderer game_state_renderer(game_state);
   InputManager input_manager(receiver);
 
-  auto player_actor = std::unique_ptr<Actor>(new PlayerActor);
+  auto player_actor = make_unique<Actor>();
+  player_actor->MakeStrategy<PlayerActorStrategy>();
   player_actor->SetColor({0,255,0});
   game_state.AddActor(std::move(player_actor));
 
   auto random = std::make_shared<std::mt19937>(std::time(0));
   for(int i=0; i<10; i++){
-    auto new_actor = std::unique_ptr<Actor>(new RandomActor(random));
+    auto new_actor = make_unique<Actor>();
+    new_actor->MakeStrategy<RandomActorStrategy>(random);
     new_actor->SetColor({255,0,0});
     game_state.AddActor(std::move(new_actor));
   }

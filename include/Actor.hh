@@ -3,25 +3,10 @@
 
 #include <memory>
 
-#include "RestrictedGameState.hh"
+#include "Action.hh"
+#include "ActorStrategy.hh"
 
 class GameState;
-
-enum class Activity {
-  Wait, Move, Attack,
-    };
-enum class Direction {
-  North, East, South, West, Self,
-};
-
-//! A container for the desired action that an Actor will perform each frame.
-struct Action{
-  Action(Activity activity = Activity::Wait,
-         Direction direction = Direction::North) :
-    activity(activity), direction(direction) { }
-  Activity activity;
-  Direction direction;
-};
 
 struct Color{
   Color(unsigned char red, unsigned char green, unsigned char blue) :
@@ -45,32 +30,25 @@ public:
   void SetColor(Color color_in) { color = color_in; }
 
   //! Sets the internal gamestate known by the actor.
-  /*! @param game_state The full state of the game.
-
-    This will construct the protected variable state.
-   */
   void SetGameState(GameState* game_state);
 
-protected:
-  //! The RestrictedGameState held by the current Actor
-  /*!
-    Contains a view into the full GameState, containing only what the current Actor can see.
-    At initialization, state contains a nullptr.
-    After being added to a GameState, shows a valid RestrictedGameState.
-   */
-  std::unique_ptr<RestrictedGameState> state;
+  template<typename Strategy, typename... Params>
+  void MakeStrategy(Params&&... params){
+    strategy = std::unique_ptr<ActorStrategy>(new Strategy(std::forward<Params>(params)...));
+    strategy->SetActor(this);
+  }
+  ActorStrategy* GetStrategy(){return strategy.get();}
+
+  Action ChooseAction(){ return strategy->ChooseAction(); }
 
 private:
-  //! Selects the action to be taken by the actor.
-  /*! Given the current state of the game, choose an action to take on this frame.
-   */
-  virtual Action ChooseAction() = 0;
-
   void SetX(int x) { this->x = x; }
   void SetY(int y) { this->y = y; }
 
   int x,y; //! The current position of the Actor.
   Color color; //! The current color of the Actor.
+  GameState* game_state; //! Pointer to the GameState which holds this Actor.
+  std::unique_ptr<ActorStrategy> strategy;
 };
 
 #endif /* _ACTOR_H_ */

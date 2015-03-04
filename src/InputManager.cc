@@ -5,7 +5,7 @@
 #include "EventReceiver.hh"
 #include "GameState.hh"
 #include "GameStateRenderer.hh"
-#include "PlayerActor.hh"
+#include "PlayerActorStrategy.hh"
 #include "Utilities.hh"
 
 InputManager::InputManager(std::shared_ptr<EventReceiver> receiver)
@@ -76,9 +76,9 @@ void InputManager::UpdatePlayerActors(GameState& state){
   }
 
   for(auto& actor : state.GetActors()){
-    auto player_actor = std::dynamic_pointer_cast<PlayerActor>(actor);
-    if(player_actor){
-      player_actor->SetCurrentAction(action);
+    auto player_actor_strategy = dynamic_cast<PlayerActorStrategy*>(actor->GetStrategy());
+    if(player_actor_strategy){
+      player_actor_strategy->SetCurrentAction(action);
     }
   }
 }
