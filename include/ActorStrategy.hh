@@ -22,4 +22,6 @@ private:
   Actor* actor;
 };
 
+#include "Actor.hh"
+
 #endif /* _ACTORSTRATEGY_H_ */

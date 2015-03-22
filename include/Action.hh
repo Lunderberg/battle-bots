@@ -15,6 +15,14 @@ struct Action{
     activity(activity), direction(direction) { }
   Activity activity;
   Direction direction;
+
+  bool operator==(const Action& other) const {
+    return (activity == other.activity) &&
+      (direction == other.direction);
+  }
+  bool operator!=(const Action& other) const {
+    return !(*this == other);
+  }
 };
 
 #endif /* _ACTION_H_ */

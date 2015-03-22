@@ -45,7 +45,7 @@ int main(){
   game_state.AddActor(std::move(player_actor));
 
   auto random = std::make_shared<std::mt19937>(std::time(0));
-  for(int i=0; i<10; i++){
+  for(int i=0; i<2; i++){
     auto new_actor = make_unique<Actor>();
     new_actor->MakeStrategy<RandomActorStrategy>(random);
     new_actor->SetColor({255,0,0});

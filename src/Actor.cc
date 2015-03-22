@@ -3,7 +3,7 @@
 #include "NullActorStrategy.hh"
 
 Actor::Actor() :
-  x(0), y(0), game_state(nullptr), color(0,255,0),
+  x(0), y(0), game_state(nullptr), color(0,255,0), task_progress(0),
   strategy(std::unique_ptr<ActorStrategy>(new NullActorStrategy)) { }
 
 Actor::~Actor(){}

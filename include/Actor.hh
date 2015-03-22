@@ -29,8 +29,6 @@ public:
   Color GetColor() const { return color; }
   void SetColor(Color color_in) { color = color_in; }
 
-  //! Sets the internal gamestate known by the actor.
-  void SetGameState(GameState* game_state);
 
   template<typename Strategy, typename... Params>
   void MakeStrategy(Params&&... params){
@@ -41,14 +39,26 @@ public:
 
   Action ChooseAction(){ return strategy->ChooseAction(); }
 
+  int GetTaskProgress() const { return task_progress; }
+  Action GetPreviousAction() const { return previous_action; }
+
 private:
   void SetX(int x) { this->x = x; }
   void SetY(int y) { this->y = y; }
+  //! Sets the internal gamestate known by the actor.
+  void SetGameState(GameState* game_state);
+  void SetTaskProgress(int progress){ task_progress = progress; }
+  void SetPreviousAction(Action action){ previous_action = action; }
 
   int x,y; //! The current position of the Actor.
   Color color; //! The current color of the Actor.
+
   GameState* game_state; //! Pointer to the GameState which holds this Actor.
+
   std::unique_ptr<ActorStrategy> strategy;
+
+  int task_progress;
+  Action previous_action;
 };
 
 #endif /* _ACTOR_H_ */

@@ -61,6 +61,12 @@ void GameState::AddActor(std::unique_ptr<Actor> actor){
 void GameState::UpdateActor(Actor& actor){
   auto action = actor.ChooseAction();
 
+  // Track how long the actor has been working on the current job.
+  if(action != actor.GetPreviousAction()){
+    actor.SetTaskProgress(0);
+  }
+  actor.SetTaskProgress(actor.GetTaskProgress() + 100);
+
   int target_x, target_y;
   switch(action.direction){
   case Direction::North:
@@ -82,6 +88,7 @@ void GameState::UpdateActor(Actor& actor){
   case Direction::Self:
     target_x = actor.GetX();
     target_y = actor.GetY();
+    break;
   }
 
   switch(action.activity){
@@ -95,6 +102,8 @@ void GameState::UpdateActor(Actor& actor){
     ActorAttack(actor, target_x, target_y);
     break;
   }
+
+  actor.SetPreviousAction(action);
 }
 
 void GameState::ActorMove(Actor& actor, int target_x, int target_y){
@@ -107,7 +116,14 @@ void GameState::ActorMove(Actor& actor, int target_x, int target_y){
 void GameState::ActorWait(Actor& actor){ }
 
 void GameState::ActorAttack(Actor& actor, int target_x, int target_y){
-  if(GetTileAt(target_x, target_y) == Tile::Dirt){
+  if((GetTileAt(target_x, target_y) == Tile::Dirt) &&
+     (actor.GetTaskProgress() >= 400)){
     SetTileAt(Tile::Empty, target_x, target_y);
+    actor.SetTaskProgress(0);
+  }
+  if((GetTileAt(target_x, target_y) == Tile::Stone) &&
+     (actor.GetTaskProgress() >= 3000)){
+    SetTileAt(Tile::Dirt, target_x, target_y);
+    actor.SetTaskProgress(0);
   }
 }
