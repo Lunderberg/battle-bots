@@ -11,6 +11,7 @@
 #include "GameState.hh"
 #include "GameStateRenderer.hh"
 #include "InputManager.hh"
+#include "LuaActorStrategy.hh"
 #include "PlayerActorStrategy.hh"
 #include "RandomActorStrategy.hh"
 #include "Utilities.hh"
@@ -50,6 +51,13 @@ int main(){
     new_actor->MakeStrategy<RandomActorStrategy>(random);
     new_actor->SetColor({255,0,0});
     game_state.AddActor(std::move(new_actor));
+  }
+
+  {
+    auto lua_actor = make_unique<Actor>();
+    lua_actor->MakeStrategy<LuaActorStrategy>("resources/bot-strategy.lua");
+    lua_actor->SetColor({0,0,255});
+    game_state.AddActor(std::move(lua_actor));
   }
 
   // // Uncomment to use bilinear filter for resizing.
