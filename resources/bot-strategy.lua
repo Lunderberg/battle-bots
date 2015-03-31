@@ -1,11 +1,13 @@
 direction = "East"
 
 function choose_action(state)
-   if state:GetX() == 5 then
-      direction = "West"
-   elseif state:GetX() == 0 then
-      direction = "East"
+   default = Action("Move", "East")
+   for i=1,30 do
+      coroutine.yield()
    end
 
-   return Action("Move", direction)
+   default = Action("Move", "West")
+   for i=1,30 do
+      coroutine.yield()
+   end
 end
