@@ -8,10 +8,14 @@ LuaActorStrategy::LuaActorStrategy(const char* filename){
 
   lua->MakeClass<Action>("Action")
     .AddConstructor<std::string, std::string>("Action");
+
+  lua->MakeClass<Actor>("Actor")
+    .AddMethod("GetX", &Actor::GetX)
+    .AddMethod("GetY", &Actor::GetY);
 }
 
 LuaActorStrategy::~LuaActorStrategy() { }
 
 Action LuaActorStrategy::ChooseAction() {
-  return lua->Call<Action>("choose_action");
+  return lua->Call<Action>("choose_action", actor);
 }

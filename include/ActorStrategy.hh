@@ -13,13 +13,13 @@ public:
   virtual ~ActorStrategy() { }
   virtual Action ChooseAction() = 0;
 protected:
+  Actor* actor;
   const Actor& GetActor() { return *actor; }
 private:
   void SetActor(Actor* actor) {
     assert(actor != nullptr);
     this->actor = actor;
   }
-  Actor* actor;
 };
 
 #include "Actor.hh"
