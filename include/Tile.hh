@@ -6,6 +6,7 @@ enum class Tile : char{
     OutOfBounds = 1,
     Dirt = 2,
     Stone = 3,
+    Unseen = 4,
     };
 
 #endif /* _TILE_H_ */

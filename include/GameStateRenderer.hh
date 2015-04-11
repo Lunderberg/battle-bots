@@ -6,6 +6,7 @@
 
 #include <irrlicht.h>
 
+class Actor;
 class GameState;
 
 class GameStateRenderer{
@@ -25,6 +26,8 @@ public:
   irr::core::vector2df GetCenter(){ return center; }
   void SetCenter(irr::core::vector2df center){ this->center = center; }
 
+  void SetViewpoint(std::shared_ptr<const Actor> actor);
+
 private:
   void InitializeTextures(irr::video::IVideoDriver* driver);
 
@@ -34,11 +37,14 @@ private:
   irr::video::ITexture* outofbounds;
   irr::video::ITexture* actor_texture;
   irr::video::ITexture* empty;
+  irr::video::ITexture* unseen;
 
 
   int tile_size;
   double scroll_speed;
   irr::core::vector2df center;
+
+  std::weak_ptr<const Actor> viewed_from;
 };
 
 #endif /* _GAMESTATERENDERER_H_ */

@@ -40,10 +40,11 @@ int main(){
   GameStateRenderer game_state_renderer(game_state);
   InputManager input_manager(receiver);
 
-  auto player_actor = make_unique<Actor>();
+  auto player_actor = std::make_shared<Actor>();
   player_actor->MakeStrategy<PlayerActorStrategy>();
   player_actor->SetColor({0,255,0});
-  game_state.AddActor(std::move(player_actor));
+  game_state.AddActor(player_actor);
+  game_state_renderer.SetViewpoint(std::shared_ptr<const Actor>(player_actor));
 
   auto random = std::make_shared<std::mt19937>(std::time(0));
   for(int i=0; i<2; i++){

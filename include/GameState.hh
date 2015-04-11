@@ -6,6 +6,7 @@
 
 #include "Actor.hh"
 #include "Tile.hh"
+#include "GameStateView.hh"
 
 class GameState{
 public:
@@ -20,6 +21,16 @@ public:
     Returns Tile::OutOfBounds if the requested location is outside of the full map.
    */
   Tile GetTileAt(int x, int y) const;
+
+  //! Returns all tiles and actors seen from a given location.
+  /*! @param x The x coordinate of the viewer.
+    @param y The y coordinate of the viewer.
+
+    Returns the view as seen by the requested location.
+   */
+  GameStateView GetTileView(int x, int y) const;
+  GameStateView GetTileView() const;
+
   //! Return the width of the play area.
   int GetWidth() const { return width; }
   //! Return the height of the play area.
@@ -29,7 +40,7 @@ public:
   /*! @param actor The actor being added.
     This method also calls Actor::SetGameState to allow the Actor to see.
    */
-  void AddActor(std::unique_ptr<Actor> actor);
+  void AddActor(std::shared_ptr<Actor> actor);
 
   bool IsTileEmpty(int x, int y) const;
 

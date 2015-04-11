@@ -34,6 +34,47 @@ Tile GameState::GetTileAt(int x, int y) const {
   }
 }
 
+GameStateView GameState::GetTileView(int x, int y) const {
+  GameStateView output;
+
+  for(int xview = x-10; xview<x+10; xview++){
+    for(int yview = y-10; yview<y+10; yview++){
+      int dist2 = (xview - x)*(xview - x) + (yview - y)*(yview - y);
+      if(dist2 < 75){
+        output.tiles.push_back({xview, yview, GetTileAt(xview,yview)});
+
+        for(const auto& actor : actors){
+          if(actor->GetX() == xview && actor->GetY() == yview){
+            output.actors.push_back({xview, yview, actor->GetColor()});
+          }
+        }
+      }
+    }
+  }
+
+  return output;
+}
+
+GameStateView GameState::GetTileView() const {
+  GameStateView output;
+
+  int x = 0;
+  int y = 0;
+  for(auto tile : map){
+    output.tiles.push_back({x,y,tile});
+
+    x++;
+    y += x/width;
+    x %= width;
+  }
+
+  for(const auto& actor : actors){
+    output.actors.push_back({actor->GetX(), actor->GetY(), actor->GetColor()});
+  }
+
+  return output;
+}
+
 void GameState::SetTileAt(Tile tile, int x, int y){
   if(x>=0 && x<width &&
      y>=0 && y<height){
@@ -53,9 +94,9 @@ bool GameState::IsTileEmpty(int x, int y) const {
   return true;
 }
 
-void GameState::AddActor(std::unique_ptr<Actor> actor){
+void GameState::AddActor(std::shared_ptr<Actor> actor){
   actor->SetGameState(this);
-  actors.push_back(std::move(actor));
+  actors.push_back(actor);
 }
 
 void GameState::UpdateActor(Actor& actor){
